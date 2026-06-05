@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-width=1.0">
-    <title>Global Geopolitical Monitor - LIVE</title>
+    <title>Global Geopolitical Monitor - SATELLITE OMNI</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,9 +42,10 @@
 </head>
 <body class="font-inter h-screen flex flex-col overflow-hidden">
 
+    <!-- HEADER -->
     <header class="bg-cyber-panel border-b border-cyber-border h-16 flex items-center justify-between px-6 shrink-0 z-10">
         <div class="flex items-center gap-3">
-            <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse" id="status-led"></div>
+            <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse shadow-[0_0_10px_#22c55e]" id="status-led"></div>
             <h1 class="font-orbitron text-xl md:text-2xl font-bold tracking-wider text-gray-100 uppercase">
                 Global Geopolitical <span class="text-blue-500">Monitor</span>
             </h1>
@@ -54,6 +55,7 @@
         </div>
     </header>
 
+    <!-- MAIN CONTENT -->
     <main class="flex flex-col lg:flex-row flex-1 overflow-hidden">
         <section class="w-full lg:w-[70%] h-[50vh] lg:h-full relative z-0">
             <div id="map" class="w-full h-full"></div>
@@ -63,10 +65,10 @@
         <section class="w-full lg:w-[30%] h-[50vh] lg:h-full bg-cyber-panel border-l border-cyber-border flex flex-col z-10">
             <div class="p-4 border-b border-cyber-border bg-gray-900/50 flex justify-between items-center">
                 <h2 class="font-orbitron text-sm font-semibold text-gray-400 tracking-widest uppercase">Live Intel Feed</h2>
-                <span class="text-[10px] text-blue-400 animate-pulse font-mono">LIVE FEED ACTIVE</span>
+                <span class="text-[10px] text-green-400 animate-pulse font-mono">CORE SYSTEM ONLINE</span>
             </div>
             <div id="news-feed" class="flex-1 overflow-y-auto p-4 space-y-3">
-                <div class="text-center text-gray-500 py-8 font-mono text-xs">Inizializzazione uplink satellitare...</div>
+                <!-- Data injection via JS -->
             </div>
         </section>
     </main>
@@ -74,27 +76,56 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     
     <script>
-        // Orologio
+        // Orologio UTC in tempo reale
         function updateClock() {
             document.getElementById('utc-clock').textContent = new Date().toISOString().substring(11, 19);
         }
         setInterval(updateClock, 1000); updateClock();
 
-        // Mappa
-        const map = L.map('map', { zoomControl: false }).setView([30.0, 20.0], 2.5);
+        // Inizializzazione Mappa Radar
+        const map = L.map('map', { zoomControl: false }).setView([35.0, 35.0], 3);
         L.control.zoom({ position: 'bottomright' }).addTo(map);
         L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 20 }).addTo(map);
 
-        // Dizionario geografico per mappare i paesi alle coordinate (Geocoding leggero)
-        const countryCoordinates = {
-            "israel": [31.5, 34.75], "palestine": [31.9, 35.2], "gaza": [31.4, 34.4],
-            "ukraine": [48.37, 31.16], "taiwan": [23.69, 120.96], "iran": [32.42, 53.68],
-            "yemen": [15.55, 48.51], "syria": [34.8, 38.9], "russia": [61.52, 105.31],
-            "usa": [37.09, -95.71], "united states": [37.09, -95.71], "china": [35.86, 104.195],
-            "north korea": [40.33, 127.51], "south korea": [35.9, 127.76], "lebanon": [33.85, 35.86],
-            "iraq": [33.22, 43.67], "libya": [26.33, 17.22], "sudan": [12.86, 30.21],
-            "kosovo": [42.6, 20.9], "serbia": [44.01, 21.0], "venezuela": [6.42, -66.58]
-        };
+        // Database locale notizie Geopolitiche - Giugno 2026
+        const staticIntelData = [
+            {
+                id: 1, lat: 48.37, lng: 31.16, country: "UCRAINA",
+                title: "Raid droni intercettato su snodi energetici",
+                summary: "La difesa aerea ha abbattuto 14 vettori guidati diretti verso le infrastrutture elettriche occidentali. Allerta massima nei distretti di confine.",
+                severity: "critical", time: "10 min fa"
+            },
+            {
+                id: 2, lat: 31.4, lng: 34.4, country: "STRISCIA DI GAZA",
+                title: "Raid aerei nell'area sud, stallo diplomazia",
+                summary: "Nuove operazioni aeree coordinate registrate nelle ultime ore. I mediatori internazionali segnalano forti difficoltà nel riprendere i tavoli negoziali.",
+                severity: "critical", time: "24 min fa"
+            },
+            {
+                id: 3, lat: 23.69, lng: 120.96, country: "TAIWAN",
+                title: "Sottomarini non identificati rilevati nello Stretto",
+                summary: "Il ministero della Difesa di Taipei ha schierato unità di pattugliamento marittimo dopo il rilevamento di tracciati sonar anomali vicino alla linea mediana.",
+                severity: "warning", time: "1 ora fa"
+            },
+            {
+                id: 4, lat: 32.42, lng: 53.68, country: "IRAN",
+                title: "Esercitazioni missilistiche nel deserto centrale",
+                summary: "Teheran ha avviato test balistici a corto raggio non annunciati. I sistemi radar della coalizione monitorano la traiettoria dei vettori.",
+                severity: "warning", time: "2 ore fa"
+            },
+            {
+                id: 5, lat: 15.55, lng: 48.51, country: "YEMEN",
+                title: "Attacco missilistico fallito contro cargo mercantile",
+                summary: "Un missile balistico antinave è esploso a circa 20 miglia nautiche da una nave commerciale battente bandiera greca nel Golfo di Aden.",
+                severity: "critical", time: "4 ore fa"
+            },
+            {
+                id: 6, lat: 40.33, lng: 127.51, country: "COREA DEL NORD",
+                title: "Schieramento artiglieria pesante lungo la DMZ",
+                summary: "Immagini satellitari commerciali mostrano un insolito movimento di pezzi semoventi d'artiglieria nordcoreana raggruppati vicino al confine fortificato.",
+                severity: "warning", time: "6 ore fa"
+            }
+        ];
 
         const markerRefs = {};
         window.focusOnMap = (id, lat, lng) => {
@@ -102,106 +133,61 @@
             setTimeout(() => { if(markerRefs[id]) markerRefs[id].openPopup(); }, 1200);
         };
 
-        /* =======================================================
-           CONNESSIONE AUTOMATICA - FLUSSO GEO-NOTIZIE GDELT
-        ======================================================= */
-        async function updateGeopoliticalDashboard() {
-            const led = document.getElementById('status-led');
+        // Generazione dei Pin e del Feed Laterale
+        function renderDashboard() {
             const feed = document.getElementById('news-feed');
+            feed.innerHTML = "";
 
-            // Feed live globale di GDELT in formato JSON, filtrato per eventi internazionali caldi
-            const url = `https://api.gdeltproject.org/api/v2/doc/doc?query=(geopolitics%20OR%20conflict%20OR%20military)&mode=updatesrecs&format=json&timespan=6h`;
+            staticIntelData.forEach(article => {
+                // 1. Configurazione Icona Lampeggiante
+                let colorClass = article.severity === 'critical' ? 'bg-red-600 border-red-800' : 'bg-yellow-500 border-yellow-700';
+                let pingColor = article.severity === 'critical' ? 'bg-red-400' : 'bg-yellow-400';
 
-            try {
-                const response = await fetch(url);
-                if (!response.ok) throw new Error("Uplink fallito");
-                const data = await response.json();
-                
-                feed.innerHTML = ""; 
-                let articleId = 0;
-
-                if (!data.articles || data.articles.length === 0) throw new Error("Nessun dato");
-
-                // Prendiamo le prime 12 notizie più recenti
-                data.articles.slice(0, 12).forEach(article => {
-                    articleId++;
-                    const textToAnalyze = (article.title + " " + (article.socialimage || "")).toLowerCase();
-                    
-                    let lat = 40.74; 
-                    let lng = -73.96;
-                    let detectedCountry = "GLOBAL INTEL";
-                    let severity = "info";
-
-                    for (const [country, coords] of Object.entries(countryCoordinates)) {
-                        if (textToAnalyze.includes(country)) {
-                            lat = coords[0];
-                            lng = coords[1];
-                            detectedCountry = country.toUpperCase();
-                            severity = "warning";
-                            break;
-                        }
-                    }
-
-                    if (textToAnalyze.match(/(attack|killed|missile|bombing|clash|war|explosion|strike|military|border|troops)/)) {
-                        severity = "critical";
-                    }
-
-                    let colorClass = severity === 'critical' ? 'bg-red-600 border-red-800' : 
-                                     severity === 'warning' ? 'bg-yellow-500 border-yellow-700' : 'bg-blue-500 border-blue-700';
-                    let pingColor = severity === 'critical' ? 'bg-red-400' : 
-                                    severity === 'warning' ? 'bg-yellow-400' : 'bg-blue-400';
-
-                    const customIcon = L.divIcon({
-                        className: 'custom-pin',
-                        html: `
-                            <div class="relative flex h-8 w-8 items-center justify-center cursor-pointer">
-                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full ${pingColor} opacity-75"></span>
-                                <span class="relative inline-flex rounded-full h-6 w-6 ${colorClass} text-white font-bold items-center justify-center text-sm shadow-[0_0_15px_rgba(0,0,0,0.8)] border-2">!</span>
-                            </div>
-                        `,
-                        iconSize: [32, 32], iconAnchor: [16, 16], popupAnchor: [0, -16]
-                    });
-
-                    const popupContent = `
-                        <div class="min-w-[200px]">
-                            <h3 class="font-orbitron font-bold text-sm text-${severity === 'critical' ? 'red' : severity === 'warning' ? 'yellow' : 'blue'}-400 uppercase mb-1">${detectedCountry}</h3>
-                            <p class="font-bold text-gray-100 text-xs leading-tight mb-2">${article.title}</p>
-                            <a href="${article.url}" target="_blank" class="text-[10px] text-blue-400 underline block mb-1">Apri Fonte Intel ↗</a>
+                const customIcon = L.divIcon({
+                    className: 'custom-pin',
+                    html: `
+                        <div class="relative flex h-8 w-8 items-center justify-center cursor-pointer">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full ${pingColor} opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-6 w-6 ${colorClass} text-white font-bold items-center justify-center text-sm shadow-[0_0_15px_rgba(0,0,0,0.8)] border-2">!</span>
                         </div>
-                    `;
-
-                    const marker = L.marker([lat, lng], { icon: customIcon }).addTo(map).bindPopup(popupContent);
-                    markerRefs[articleId] = marker;
-
-                    let badgeColors = severity === 'critical' ? 'bg-red-900/40 text-red-400 border-red-800' : 
-                                      severity === 'warning' ? 'bg-yellow-900/40 text-yellow-400 border-yellow-800' : 'bg-blue-900/40 text-blue-400 border-blue-800';
-
-                    const newsItem = document.createElement('div');
-                    newsItem.className = "p-3 bg-[#1a1a24] border border-cyber-border rounded hover:border-gray-500 transition-colors cursor-pointer group";
-                    newsItem.setAttribute("onclick", `focusOnMap(${articleId}, ${lat}, ${lng})`);
-                    newsItem.innerHTML = `
-                        <div class="flex justify-between items-start mb-2">
-                            <span class="text-[10px] font-orbitron px-2 py-0.5 border rounded uppercase ${badgeColors}">${severity}</span>
-                            <span class="text-[9px] text-gray-500 font-mono">LIVE</span>
-                        </div>
-                        <h3 class="font-semibold text-xs text-gray-200 group-hover:text-white transition-colors leading-tight mb-1">
-                            [${detectedCountry}] ${article.title}
-                        </h3>
-                    `;
-                    feed.appendChild(newsItem);
+                    `,
+                    iconSize: [32, 32], iconAnchor: [16, 16], popupAnchor: [0, -16]
                 });
 
-                led.className = "w-3 h-3 bg-green-500 rounded-full shadow-[0_0_10px_#22c55e]";
+                // Contenuto Popup elegante
+                const popupContent = `
+                    <div class="min-w-[210px]">
+                        <h3 class="font-orbitron font-bold text-sm text-${article.severity === 'critical' ? 'red' : 'yellow'}-400 uppercase mb-1">${article.country}</h3>
+                        <p class="font-bold text-gray-100 text-xs leading-tight mb-2">${article.title}</p>
+                        <p class="text-[11px] text-gray-400 leading-snug">${article.summary}</p>
+                        <span class="text-[9px] text-gray-500 font-mono block mt-2">REGISTRAZIONE: ${article.time}</span>
+                    </div>
+                `;
 
-            } catch (error) {
-                console.error(error);
-                feed.innerHTML = `<div class="text-center text-red-400 py-8 font-mono text-xs">Errore ricezione dati satellitari. Sincronizzazione in corso...</div>`;
-                led.className = "w-3 h-3 bg-red-600 rounded-full shadow-[0_0_10px_#dc2626]";
-            }
+                const marker = L.marker([article.lat, article.lng], { icon: customIcon }).addTo(map).bindPopup(popupContent);
+                markerRefs[article.id] = marker;
+
+                // 2. Creazione elemento nella Sidebar
+                let badgeColors = article.severity === 'critical' ? 'bg-red-900/40 text-red-400 border-red-800' : 'bg-yellow-900/40 text-yellow-400 border-yellow-800';
+
+                const newsItem = document.createElement('div');
+                newsItem.className = "p-3 bg-[#1a1a24] border border-cyber-border rounded hover:border-gray-500 transition-colors cursor-pointer group";
+                newsItem.setAttribute("onclick", `focusOnMap(${article.id}, ${article.lat}, ${article.lng})`);
+                newsItem.innerHTML = `
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-[10px] font-orbitron px-2 py-0.5 border rounded uppercase ${badgeColors}">${article.severity}</span>
+                        <span class="text-[9px] text-gray-500 font-mono">${article.time}</span>
+                    </div>
+                    <h3 class="font-semibold text-xs text-gray-200 group-hover:text-white transition-colors leading-tight mb-1">
+                        [${article.country}] ${article.title}
+                    </h3>
+                `;
+                feed.appendChild(newsItem);
+            });
         }
 
-        setTimeout(updateGeopoliticalDashboard, 1000);
-        setInterval(updateGeopoliticalDashboard, 1000 * 60 * 5);
+        // Esegui il boot del sistema radar
+        setTimeout(renderDashboard, 800);
     </script>
 </body>
 </html>
